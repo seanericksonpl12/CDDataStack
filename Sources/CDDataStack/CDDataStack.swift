@@ -2,11 +2,12 @@
 // https://docs.swift.org/swift-book
 import CoreData
 
-protocol CDDataModel {
+public protocol CDDataModel {
     associatedtype CDModel: NSManagedObject
     func saveChanges(stack: CDDataStack)
 }
 
+public
 extension CDDataModel {
     func saveChanges(stack: CDDataStack) {
         guard let stack = CDDataStack.shared else {
@@ -36,6 +37,7 @@ extension CDDataModel {
     }
 }
 
+public
 class CDDataStack {
     var container: NSPersistentContainer!
     private static var privateShared: CDDataStack?
