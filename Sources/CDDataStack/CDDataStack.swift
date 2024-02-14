@@ -55,8 +55,8 @@ class CDDataStack {
 }
 
 extension CDDataStack {
-    public func setup(with container: NSPersistentContainer) {
-        CDDataStack.privateShared = CDDataStack(container: container)
+    public static func setup(with container: NSPersistentContainer) {
+        privateShared = CDDataStack(container: container)
     }
 }
 
