@@ -23,10 +23,10 @@ extension CDDataModel {
             return nil
         }
         let model = CDModel(context: stack.container.viewContext)
-        let mirror = Mirror(reflecting: self)
-        mirror.children.forEach {
-            print($0)
-        }
+        let mirror = CDObjectBuilder(object: self)
+        mirror.setValues(for: model)
+        print(model)
+        return model
     }
 }
 

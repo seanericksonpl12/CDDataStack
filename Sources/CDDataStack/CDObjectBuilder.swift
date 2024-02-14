@@ -34,17 +34,8 @@ class CDObjectBuilder {
     
     func setValues(for object: NSManagedObject) {
         mirror.children.forEach { child in
-            switch cdType(of: child) {
-            case .int, .double, .float, .bool:
-                if let label = child.label {
-                    object.setValue(child.value, forKey: label)
-                }
-            case .string:
-                <#code#>
-            case .cdmodel:
-                <#code#>
-            case .none:
-                <#code#>
+            if let key = child.label {
+                setObjectValue(object: object, value: child.value, forKey: key)
             }
         }
     }
