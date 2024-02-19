@@ -2,47 +2,78 @@
 // https://docs.swift.org/swift-book
 import CoreData
 
-@propertyWrapper
-struct Persistent<T: NSManagedObject> {
-    var wrappedValue: CDDataModel<T>
+fileprivate struct DataStackConstants {
+    static let folder = "CDDataStack/"
+    static let databaseURL = folder.appending("generatedStack.xcdatamodeld")
+}
+
+class CDDataStack {
+    internal var container: NSPersistentContainer!
+    internal static let containerName = "CDContainedBaseModel"
+    
+    private static var privateShared: CDDataStack?
+    public static var shared = CDDataStack()
+    
+    private init(inMemory: Bool = true) {
+        guard let url = Bundle.module.url(forResource: CDDataStack.containerName, withExtension: "momd") else { fatalError("Could not get URL for model") }
+        guard let model = NSManagedObjectModel(contentsOf: url) else { fatalError("Could not get model for: \(url)") }
+        container = NSPersistentContainer(name: "CDBaseContainer", managedObjectModel: model)
+        container.persistentStoreDescriptions.first?.type = inMemory ? NSInMemoryStoreType : NSSQLiteStoreType
+        container.loadPersistentStores(completionHandler: { [self] (desc, err) in
+            if let err = err {
+                fatalError("Error loading TEMPORARY STORE: \(desc): \(err)")
+            }
+            debugPrint("Loaded \(container.persistentStoreDescriptions.first?.type) successfully")
+            
+        })
+        container.viewContext.automaticallyMergesChangesFromParent = true
+    }
+}
+
+extension CDDataStack {
+    
+    public static func setupHeadless(inMemory: Bool = false) {
+        guard let url = Bundle.module.url(forResource: containerName, withExtension: "momd") else { fatalError("Could not get URL for model") }
+        guard let model = NSManagedObjectModel(contentsOf: url) else { fatalError("Could not get model for: \(url)") }
+        let container = NSPersistentContainer(name: "CDBaseContainer", managedObjectModel: model)
+        container.persistentStoreDescriptions.first?.type = inMemory ? NSInMemoryStoreType : NSSQLiteStoreType
+        container.loadPersistentStores(completionHandler: { (desc, err) in
+            if let err = err {
+                fatalError("Error loading TEMPORARY STORE: \(desc): \(err)")
+            }
+            debugPrint("Loaded \(container.persistentStoreDescriptions.first?.type) successfully")
+            
+        })
+        
+        privateShared = CDDataStack()
+    }
+    
+    public static func setup() {
+        guard let url = Bundle.module.url(forResource: containerName, withExtension: "momd") else { fatalError("Could not get URL for model") }
+        guard let model = NSManagedObjectModel(contentsOf: url) else { fatalError("Could not get model for: \(url)") }
+        let container = NSPersistentContainer(name: "CDBaseContainer", managedObjectModel: model)
+        container.persistentStoreDescriptions.first?.configuration = "Local"
+        container.persistentStoreDescriptions.first?.type = NSInMemoryStoreType
+        container.loadPersistentStores(completionHandler: { (desc, err) in
+            if let err = err {
+                fatalError("Error loading TEMPORARY STORE: \(desc): \(err)")
+            }
+            debugPrint("Loaded TEMPORARY STORE successfully")
+            
+        })
+        print(container)
+        privateShared = CDDataStack()
+    }
+//    
+//    public static func setup(with container: NSPersistentContainer) {
+//        privateShared = CDDataStack(container: container)
+//    }
 }
 
 public
-class CDDataStack {
-    var container: NSPersistentContainer!
-    private static var privateShared: CDDataStack?
-    public static var shared: CDDataStack? {
-        if let pShared = privateShared {
-            return pShared
-        } else {
-            return nil
-        }
-    }
-    
-    private init(container: NSPersistentContainer) {
-        self.container = container
-    }
-}
-
-extension CDDataStack {
-    public static func setup(with container: NSPersistentContainer) {
-        privateShared = CDDataStack(container: container)
-    }
-}
-
-extension CDDataStack {
-    
-    func save() {
-        
-    }
-    
-    func delete<T: NSManagedObject>(object: T) {
-        
-    }
-    
-    func load<T: NSManagedObject>() -> T? {
-        return nil
-    }
+enum CDModelConfiguration {
+    case local
+    case normal
 }
 
 
