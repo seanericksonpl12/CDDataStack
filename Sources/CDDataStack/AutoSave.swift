@@ -7,6 +7,8 @@
 
 import Foundation
 
+
+// TODO: - Test removing generics
 @available(iOS 16.4, *)
 @propertyWrapper
 public struct AutoSave<Value: Any> {

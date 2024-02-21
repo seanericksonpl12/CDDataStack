@@ -9,6 +9,10 @@ import Foundation
 import CoreData
 import ObjC
 
+public protocol AutoStruct {
+    func type() -> Any.Type
+}
+
 @available(iOS 16.4, *)
 @objcMembers
 public class CDAutoModel: NSObject {

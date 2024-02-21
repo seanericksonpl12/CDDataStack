@@ -13,6 +13,13 @@ import SwiftData
 class AutoSaveTest: CDAutoModel {
     @AutoSave var myString: String = ""
     @AutoSave var myInt: Int = 10
+    @AutoSave var myStruct = TestingStruct()
+    var unrelatedString: String = "unrelated"
+}
+
+struct TestingStruct: AutoStruct {
+    var nestedString: String = "something"
+    var nestedInt: Int = 20
 }
 
 @available(iOS 16.4, *)
@@ -63,7 +70,7 @@ final class CDDataStackTests: XCTestCase {
     func testPropertyWrapper() {
 
         let test = AutoSaveTest()
-        print(test.myString)
-        test.myString = "testing..."
+        print(test.myStruct.type())
+        //test.myString = "testing..."
     }
 }
