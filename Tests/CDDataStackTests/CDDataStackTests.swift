@@ -12,7 +12,9 @@ import SwiftData
 class AutoSaveTest: CDAutoModel {
     @AutoSave var myString: String = ""
     @AutoSave var myInt: Int = 10
-    var myClass = TestingClass()
+    @AutoSave var myBool = false
+    //var myClass = TestingClass()
+    @AutoSave var myArr: [Int] = [1, 2]
     var unrelatedString: String = "unrelated"
 }
 
@@ -77,9 +79,9 @@ final class CDDataStackTests: XCTestCase {
     func testPropertyWrapper() {
         
         let test = AutoSaveTest()
-        print(test.myClass.nestedString)
-        test.myClass.nestedString = "string 2"
-        print(test.myClass.nestedString)
+        print(test.myArr)
+        test.myArr = [2, 3]
+        print(test.myArr)
     }
     
     func testRunPool() {

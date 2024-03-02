@@ -25,9 +25,8 @@ extension CDDataStack {
                 let mirror = Mirror(reflecting: object)
                 var keypaths = [String: Any]()
                 var entities = [entity]
-                var nested = [NestedModel : NSEntityDescription]()
                 for case let (label?, mirrorValue) in mirror.children {
-                    setupAttributes(currentEntity: entity, entityList: &entities, nested: &nested, label: label, value: mirrorValue, keyPaths: &keypaths)
+                    setupAttributes(currentEntity: entity, entityList: &entities, label: label, value: mirrorValue, keyPaths: &keypaths)
                 }
                 // TODO: Create new merged model, preferrably without reloading persistant stores
                 let model = newModelAddingEntity(entity)
