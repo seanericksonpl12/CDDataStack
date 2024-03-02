@@ -11,11 +11,21 @@ import ObjC
 @objcMembers
 public class CDDataModel<Model: NSManagedObject>: NSObject {
     typealias CDModel = Model
+    private var viewContext: NSManagedObjectContext? { CDDataStack.shared.container?.viewContext }
     required override init() {}
 }
 
 
 extension CDDataModel {
+    
+    @discardableResult
+    final public func save() -> Model? {
+        guard let context = self.viewContext else {
+            print("view context not setup.")
+            return nil
+        }
+        return self.save(context: context)
+    }
     
     @discardableResult
     final public func save(context: NSManagedObjectContext) -> Model? {
@@ -70,6 +80,46 @@ extension CDDataModel {
             print(error)
             return nil
         }
+    }
+}
+
+// MARK - Add Custom Entity to CDDataStack model
+extension CDDataModel {
+    func addToModel(model: NSManagedObjectModel) -> NSManagedObjectModel {
+        let modelCopy = model
+        let entity = NSEntityDescription()
+        let mirror = Mirror(reflecting: self)
+        for case let (label?, value) in mirror.children {
+            let attribute = NSAttributeDescription()
+            attribute.name = label
+            
+            attribute.defaultValue = value
+            attribute.isOptional = false
+            attribute.allowsExternalBinaryDataStorage = false
+            switch value {
+            case is String:
+                attribute.attributeType = .stringAttributeType
+                if #available(iOS 15.0, *) {
+                    attribute.type = .string
+                }
+            case is Int:
+                attribute.attributeType = .integer16AttributeType
+                if #available(iOS 15.0, *) {
+                    attribute.type = .integer16
+                }
+            case is Bool:
+                attribute.attributeType = .booleanAttributeType
+                if #available(iOS 15.0, *) {
+                    attribute.type = .boolean
+                }
+            default:
+                break
+            }
+            entity.name = "MyEntity"
+            entity.properties.append(attribute)
+        }
+        model.entities = [entity]
+        return model
     }
 }
 
