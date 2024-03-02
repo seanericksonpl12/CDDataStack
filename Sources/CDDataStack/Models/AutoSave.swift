@@ -11,7 +11,8 @@ import Foundation
 // TODO: - Test removing generics
 @available(iOS 16.4, *)
 @propertyWrapper
-public struct AutoSave<Value: Any> {
+public
+struct AutoSave<Value: Any>: AutoSaveProtocol {
     public static subscript<T: CDAutoModel>(
         _enclosingInstance instance: T,
         wrapped wrappedKeyPath: ReferenceWritableKeyPath<T, Value>,
@@ -21,14 +22,14 @@ public struct AutoSave<Value: Any> {
             instance[keyPath: storageKeyPath].storage
         }
         set {
-            if !instance.fromInit && !equals(newValue, instance[keyPath: storageKeyPath].storage) {
+            if instance.shouldUpdate && !equals(newValue, instance[keyPath: storageKeyPath].storage) {
                 instance.saveChanges(keyPath: storageKeyPath, value: newValue)
             }
             instance[keyPath: storageKeyPath].storage = newValue
         }
     }
     
-    @available(*, unavailable, message: "@AutoSave can only be applied to CDAutoModels.")
+    @available(*, unavailable, message: "@AutoSave can only be applied within CDAutoModels.")
     public var wrappedValue: Value {
         get { fatalError() }
         set { fatalError() }
@@ -46,3 +47,12 @@ public struct AutoSave<Value: Any> {
         return (x as! AnyHashable) == (y as! AnyHashable)
     }
 }
+
+internal 
+protocol AutoSaveProtocol {
+    associatedtype Value = Any
+    var storage: Value { get }
+}
+
+public
+protocol Saveable {}

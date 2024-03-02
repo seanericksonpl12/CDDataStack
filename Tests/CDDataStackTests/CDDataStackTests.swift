@@ -9,17 +9,24 @@ import SwiftData
 //}
 
 @available(iOS 16.4, *)
-@objcMembers
 class AutoSaveTest: CDAutoModel {
     @AutoSave var myString: String = ""
     @AutoSave var myInt: Int = 10
-    @AutoSave var myStruct = TestingStruct()
+    var myClass = TestingClass()
     var unrelatedString: String = "unrelated"
 }
 
-struct TestingStruct: AutoStruct {
-    var nestedString: String = "something"
-    var nestedInt: Int = 20
+@available(iOS 16.4, *)
+@objcMembers
+class AutoSaveTest2: CDAutoModel {
+    @AutoSave var secondString: String = ""
+    @AutoSave var secondInt: Int = 10
+}
+
+@available(iOS 16.4, *)
+class TestingClass: CDAutoModel {
+    @AutoSave var nestedString: String = "initial string"
+    @AutoSave var nestedInt: Int = 1
 }
 
 @available(iOS 16.4, *)
@@ -68,9 +75,22 @@ final class CDDataStackTests: XCTestCase {
     
     @available(iOS 16.4, *)
     func testPropertyWrapper() {
-
+        
         let test = AutoSaveTest()
-        print(test.myStruct.type())
-        //test.myString = "testing..."
+        print(test.myClass.nestedString)
+        test.myClass.nestedString = "string 2"
+        print(test.myClass.nestedString)
+    }
+    
+    func testRunPool() {
+        autoreleasepool {
+            let test = CDAutoModel()
+            print("Objects in run pool:")
+            CDDataStack.printObjects()
+        }
+        
+        Thread.sleep(forTimeInterval: 0.5)
+        print("Objects out of run pool:")
+        CDDataStack.printObjects()
     }
 }

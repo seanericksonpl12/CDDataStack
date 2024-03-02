@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ObjC
 
 extension String {
     var asKey: String {
@@ -18,3 +19,4 @@ extension String {
         return self
     }
 }
+

@@ -9,18 +9,18 @@ import Foundation
 import CoreData
 import ObjC
 
-public protocol AutoStruct {
-    func type() -> Any.Type
-}
-
 @available(iOS 16.4, *)
 @objcMembers
 public class CDAutoModel: NSObject {
-    internal final var fromInit: Bool = true
+    internal final var shouldUpdate: Bool = false
     override init() {
         super.init()
         self.declareModel(caller: self)
-        self.fromInit = false
+        self.shouldUpdate = true
+    }
+    
+    deinit {
+        print("Object deinitialized \(self)")
     }
 }
 
@@ -35,4 +35,8 @@ extension CDAutoModel {
     internal func declareModel<T: CDAutoModel>(caller: T) {
         CDDataStack.declareEntity(for: caller)
     }
+}
+
+@objcMembers
+public class NestedModel: NSObject {
 }

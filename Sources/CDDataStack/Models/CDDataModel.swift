@@ -11,7 +11,7 @@ import ObjC
 @objcMembers
 public class CDDataModel<Model: NSManagedObject>: NSObject {
     typealias CDModel = Model
-    private var viewContext: NSManagedObjectContext? { CDDataStack.shared.container.viewContext }
+    private var viewContext: NSManagedObjectContext? { CDDataStack.shared.container?.viewContext }
     required override init() {}
 }
 
