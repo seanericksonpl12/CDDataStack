@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Sean Erickson on 3/2/24.
 //
@@ -69,112 +69,66 @@ extension CDDataStack {
     }
     
     static func setupAttributes(currentEntity: NSEntityDescription,
-                                        entityList: inout [NSEntityDescription],
-                                        label: String,
-                                        value: Any,
-                                        keyPaths: inout [String: Any],
-                                        isPrimitive: Bool = true) {
-        if isPrimitive {
-            let attribute = NSAttributeDescription()
-            attribute.name = label
-            attribute.isOptional = false
-            attribute.allowsExternalBinaryDataStorage = false
-            if let value = value as? AutoSave<String> {
-                attribute.attributeType = .stringAttributeType
-                attribute.type = .string
-                attribute.defaultValue = value.storage as Any
-                keyPaths[label] = value.storage
-            } else if let value = value as? AutoSave<Int> {
-                attribute.attributeType = .integer16AttributeType
-                attribute.type = .integer16
-                attribute.defaultValue = value.storage as Any
-                keyPaths[label] = value.storage
-            } else if let value = value as? AutoSave<Bool> {
-                attribute.attributeType = .booleanAttributeType
-                attribute.type = .boolean
-                attribute.defaultValue = value.storage as Any
-                keyPaths[label] = value.storage
-            } else if let value = value as? AutoSave<Float> {
-                attribute.attributeType = .floatAttributeType
-                attribute.type = .float
-                attribute.defaultValue = value.storage as Any
-                keyPaths[label] = value.storage
-            } else if let value = value as? AutoSave<Double> {
-                attribute.attributeType = .doubleAttributeType
-                attribute.type = .double
-                attribute.defaultValue = value.storage as Any
-                keyPaths[label] = value.storage
-            } else if let value = value as? AutoSave<Date> {
-                attribute.attributeType = .dateAttributeType
-                attribute.type = .date
-                attribute.defaultValue = value.storage as Any
-                keyPaths[label] = value.storage
-            } else if let value = value as? AutoSave<Data> {
-                attribute.attributeType = .binaryDataAttributeType
-                attribute.type = .binaryData
-                attribute.defaultValue = value.storage as Any
-                keyPaths[label] = value.storage
-                // todo: Add array support
-            } else if let value = value as? (any AutoSaveProtocol) {
-                // Handle unknown object
-                // TODO: - Array and dictionary Management, need to separate
-                if let storage = value.storage as? NestedModel {
-                    let mirror = Mirror(reflecting: storage)
-                    // make a new entity for the auto struct
-                    let newEntity = setupRelationship(for: storage, currentEntity: currentEntity, label: label)
-                    entityList.append(newEntity)
-                    for case let (key?, value) in mirror.children {
-                        CDDataStack.setupAttributes(currentEntity: newEntity, entityList: &entityList, label: key, value: value, keyPaths: &keyPaths, isPrimitive: false)
-                    }
-                }
-                return
+                                entityList: inout [NSEntityDescription],
+                                label: String,
+                                value: Any,
+                                keyPaths: inout [String: Any],
+                                isPrimitive: Bool = true) {
+        let attribute = NSAttributeDescription()
+        attribute.name = label
+        attribute.isOptional = false
+        attribute.allowsExternalBinaryDataStorage = false
+        if let value = value as? AutoSave<String> {
+            attribute.attributeType = .stringAttributeType
+            attribute.type = .string
+            attribute.defaultValue = value.storage as Any
+            keyPaths[label] = value.storage
+        } else if let value = value as? AutoSave<Int> {
+            attribute.attributeType = .integer16AttributeType
+            attribute.type = .integer16
+            attribute.defaultValue = value.storage as Any
+            keyPaths[label] = value.storage
+        } else if let value = value as? AutoSave<Bool> {
+            attribute.attributeType = .booleanAttributeType
+            attribute.type = .boolean
+            attribute.defaultValue = value.storage as Any
+            keyPaths[label] = value.storage
+        } else if let value = value as? AutoSave<Float> {
+            attribute.attributeType = .floatAttributeType
+            attribute.type = .float
+            attribute.defaultValue = value.storage as Any
+            keyPaths[label] = value.storage
+        } else if let value = value as? AutoSave<Double> {
+            attribute.attributeType = .doubleAttributeType
+            attribute.type = .double
+            attribute.defaultValue = value.storage as Any
+            keyPaths[label] = value.storage
+        } else if let value = value as? AutoSave<Date> {
+            attribute.attributeType = .dateAttributeType
+            attribute.type = .date
+            attribute.defaultValue = value.storage as Any
+            keyPaths[label] = value.storage
+        } else if let value = value as? AutoSave<Data> {
+            attribute.attributeType = .binaryDataAttributeType
+            attribute.type = .binaryData
+            attribute.defaultValue = value.storage as Any
+            keyPaths[label] = value.storage
+            // todo: Add array support
+        } else if let value = value as? (any AutoSaveProtocol) {
+            // Primitive Array
+            if let storage = value.storage as? Array<NSObject> {
+                attribute.type = .transformable
+                attribute.attributeType = .transformableAttributeType
+                attribute.defaultValue = storage as Any
+                keyPaths[label] = storage
             } else {
                 return
             }
-            currentEntity.properties.append(attribute)
         } else {
-            print(label)
-            let attribute = NSAttributeDescription()
-            attribute.name = label
-            attribute.isOptional = false
-            attribute.allowsExternalBinaryDataStorage = false
-            if let value = value as? String {
-                attribute.attributeType = .stringAttributeType
-                attribute.type = .string
-                attribute.defaultValue = value
-            } else if let value = value as? Int {
-                attribute.attributeType = .integer16AttributeType
-                attribute.type = .integer16
-                attribute.defaultValue = value
-            } else if let value = value as? Bool {
-                attribute.attributeType = .booleanAttributeType
-                attribute.type = .boolean
-                attribute.defaultValue = value
-            } else if let value = value as? Float {
-                attribute.attributeType = .floatAttributeType
-                attribute.type = .float
-                attribute.defaultValue = value
-            } else if let value = value as? Double {
-                attribute.attributeType = .doubleAttributeType
-                attribute.type = .double
-                attribute.defaultValue = value
-            } else if let value = value as? Date {
-                attribute.attributeType = .dateAttributeType
-                attribute.type = .date
-                attribute.defaultValue = value
-            } else if let value = value as? Data {
-                attribute.attributeType = .binaryDataAttributeType
-                attribute.type = .binaryData
-                attribute.defaultValue = value
-            } else if let value = value as? (any AutoSaveProtocol) {
-                //CDDataStack.setupStruct(for: value)
-                print("fuck its nested")
-                return
-            } else {
-                return
-            }
-            currentEntity.properties.append(attribute)
+            return
         }
+        
+        currentEntity.properties.append(attribute)
     }
     
     static func setupRelationship<T: Any>(for object: T, currentEntity: NSEntityDescription, label: String) -> NSEntityDescription {
