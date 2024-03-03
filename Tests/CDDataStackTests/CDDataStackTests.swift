@@ -13,7 +13,7 @@ class AutoSaveTest: CDAutoModel {
     @AutoSave var myString: String = ""
     @AutoSave var myInt: Int = 10
     @AutoSave var myBool = false
-    //var myClass = TestingClass()
+    @AutoSave var myClass = TestingClass()
     @AutoSave var myArr: [Int] = [1, 2]
     var unrelatedString: String = "unrelated"
 }
@@ -26,7 +26,7 @@ class AutoSaveTest2: CDAutoModel {
 }
 
 @available(iOS 16.4, *)
-class TestingClass: CDAutoModel {
+class TestingClass: NestedModel {
     @AutoSave var nestedString: String = "initial string"
     @AutoSave var nestedInt: Int = 1
 }
@@ -79,9 +79,9 @@ final class CDDataStackTests: XCTestCase {
     func testPropertyWrapper() {
         
         let test = AutoSaveTest()
-        print(test.myArr)
-        test.myArr = [2, 3]
-        print(test.myArr)
+        print(test.myClass.nestedString)
+        test.myClass.nestedString = "String 3"
+        print(test.myClass.nestedString)
     }
     
     func testRunPool() {

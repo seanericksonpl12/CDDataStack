@@ -12,15 +12,15 @@ import ObjC
 @available(iOS 16.4, *)
 @objcMembers
 public class CDAutoModel: NSObject {
-    internal final var shouldUpdate: Bool = false
+    internal final var _shouldUpdate: Bool = false
     override init() {
         super.init()
-        self.declareModel(caller: self)
-        self.shouldUpdate = true
-    }
-    
-    deinit {
-        print("Object deinitialized \(self)")
+        if let caller = self as? NestedModel {
+            self.declareNestedModel(caller: caller)
+        } else {
+            self.declareModel(caller: self)
+        }
+        self._shouldUpdate = true
     }
 }
 
@@ -28,15 +28,18 @@ public class CDAutoModel: NSObject {
 extension CDAutoModel {
     
     internal func saveChanges<T: CDAutoModel, Value: Any>(keyPath: ReferenceWritableKeyPath<T, AutoSave<Value>>, value: Value) {
-        print("saving changes from \(keyPath) for value \(value)")
         CDDataStack.saveEntity(name: String(describing: T.self), for: self, keyPath: keyPath, value: value)
     }
     
     internal func declareModel<T: CDAutoModel>(caller: T) {
         CDDataStack.declareEntity(for: caller)
     }
+    
+    internal func declareNestedModel<T: NestedModel>(caller: T) {
+        CDDataStack.declareNestedEntity(for: caller)
+    }
 }
 
+@available(iOS 16.4, *)
 @objcMembers
-public class NestedModel: NSObject {
-}
+public class NestedModel: CDAutoModel {}
