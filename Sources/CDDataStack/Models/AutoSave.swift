@@ -22,7 +22,7 @@ struct AutoSave<Value: Any>: AutoSaveProtocol {
             instance[keyPath: storageKeyPath].storage
         }
         set {
-            if instance.shouldUpdate && !equals(newValue, instance[keyPath: storageKeyPath].storage) {
+            if instance._shouldUpdate && !equals(newValue, instance[keyPath: storageKeyPath].storage) {
                 instance.saveChanges(keyPath: storageKeyPath, value: newValue)
             }
             instance[keyPath: storageKeyPath].storage = newValue

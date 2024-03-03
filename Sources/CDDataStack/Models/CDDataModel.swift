@@ -8,6 +8,7 @@
 import CoreData
 import ObjC
 
+@available(iOS 16.4, *)
 @objcMembers
 public class CDDataModel<Model: NSManagedObject>: NSObject {
     typealias CDModel = Model
@@ -16,6 +17,7 @@ public class CDDataModel<Model: NSManagedObject>: NSObject {
 }
 
 
+@available(iOS 16.4, *)
 extension CDDataModel {
     
     @discardableResult
@@ -46,9 +48,9 @@ extension CDDataModel {
     }
 }
 
+@available(iOS 16.4, *)
 extension CDDataModel {
     
-    @available(iOS 15.0, *)
     static func load(context: NSManagedObjectContext) -> [CDDataModel<Model>]? {
         do {
             guard let entityName = Model.entity().name else { return nil }
@@ -84,6 +86,7 @@ extension CDDataModel {
 }
 
 // MARK - Add Custom Entity to CDDataStack model
+@available(iOS 16.4, *)
 extension CDDataModel {
     func addToModel(model: NSManagedObjectModel) -> NSManagedObjectModel {
         let modelCopy = model
@@ -123,6 +126,7 @@ extension CDDataModel {
     }
 }
 
+@available(iOS 16.4, *)
 extension CDDataModel {
     
     @discardableResult

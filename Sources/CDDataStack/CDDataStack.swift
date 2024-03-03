@@ -8,10 +8,12 @@ fileprivate struct DataStackConstants {
     static let databaseURL = folder.appending("generatedStack.xcdatamodeld")
 }
 
+@available(iOS 16.4, *)
 class CDDataStack {
     internal var container: NSPersistentContainer?
     internal static let containerName = "CDContainedBaseModel"
     internal var weakReferences: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
+    internal var entitiesToDeclare = [(NestedModel, NSEntityDescription)]()
     
     private static var privateShared: CDDataStack?
     public static var shared = CDDataStack()
@@ -21,6 +23,7 @@ class CDDataStack {
     }
 }
 
+@available(iOS 16.4, *)
 extension CDDataStack {
     
     public static func setupHeadless(inMemory: Bool = false) {
@@ -57,6 +60,7 @@ extension CDDataStack {
     }
 }
 
+@available(iOS 16.4, *)
 extension CDDataStack {
     
     static func newModelAddingEntity(_ entity: NSEntityDescription) -> NSManagedObjectModel {
@@ -83,6 +87,7 @@ extension CDDataStack {
     }
 }
 
+@available(iOS 16.4, *)
 extension CDDataStack {
     static var memoryType: String {
         // TODO: EDIT TO TEST IN MEMORY FOR LARGER TESTS
@@ -95,6 +100,7 @@ extension CDDataStack {
 }
 
 // MARK: - TESTING
+@available(iOS 16.4, *)
 extension CDDataStack {
     static func printObjects() {
         print(shared.weakReferences.allObjects)

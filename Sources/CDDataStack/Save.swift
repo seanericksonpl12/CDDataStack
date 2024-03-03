@@ -46,10 +46,10 @@ extension CDDataStack {
             if type(of: savedObject) === type(of: object) {
                 // Try to update this object
                 if let autoModel = savedObject as? T {
-                    let shouldUpdate = autoModel.shouldUpdate
-                    autoModel.shouldUpdate = false
+                    let shouldUpdate = autoModel._shouldUpdate
+                    autoModel._shouldUpdate = false
                     autoModel.safeSetValue(value, forKey: key.asKey)
-                    autoModel.shouldUpdate = shouldUpdate
+                    autoModel._shouldUpdate = shouldUpdate
                 }
             }
         }
