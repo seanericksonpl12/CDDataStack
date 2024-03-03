@@ -19,7 +19,9 @@ let package = Package(
             dependencies: ["ObjC"]),
         .target(
             name: "ObjC",
-            publicHeadersPath: "include"),
+            dependencies: [],
+            publicHeadersPath: "include"
+        ),
         .testTarget(
             name: "CDDataStackTests",
             dependencies: ["CDDataStack"]),

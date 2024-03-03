@@ -11,9 +11,9 @@ import ObjC
 
 @available(iOS 16.4, *)
 @objcMembers
-public class CDAutoModel: NSObject {
+open class CDAutoModel: NSObject {
     internal final var _shouldUpdate: Bool = false
-    override init() {
+    override public init() {
         super.init()
         if let caller = self as? NestedModel {
             self.declareNestedModel(caller: caller)
