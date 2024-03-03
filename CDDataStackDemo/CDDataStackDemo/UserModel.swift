@@ -22,7 +22,8 @@ import SwiftUI
 class UserModel: CDAutoModel {
     
     static var shared: UserModel = UserModel()
-    
+
+
     @AutoSave var x: Int = 0
     @AutoSave var y: Int = 0
 }
