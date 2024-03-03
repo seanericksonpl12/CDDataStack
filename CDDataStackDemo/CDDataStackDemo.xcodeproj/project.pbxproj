@@ -14,8 +14,8 @@
 		9259850C2B94D1280063DDD3 /* CDDataStackDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9259850B2B94D1280063DDD3 /* CDDataStackDemoTests.swift */; };
 		925985162B94D1280063DDD3 /* CDDataStackDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925985152B94D1280063DDD3 /* CDDataStackDemoUITests.swift */; };
 		925985182B94D1280063DDD3 /* CDDataStackDemoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925985172B94D1280063DDD3 /* CDDataStackDemoUITestsLaunchTests.swift */; };
-		925985262B94D1810063DDD3 /* CDDataStack in Frameworks */ = {isa = PBXBuildFile; productRef = 925985252B94D1810063DDD3 /* CDDataStack */; };
 		925985282B94D1E60063DDD3 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925985272B94D1E60063DDD3 /* UserModel.swift */; };
+		9259852F2B94D90C0063DDD3 /* CDDataStack in Frameworks */ = {isa = PBXBuildFile; productRef = 9259852E2B94D90C0063DDD3 /* CDDataStack */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,7 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				925985262B94D1810063DDD3 /* CDDataStack in Frameworks */,
+				9259852F2B94D90C0063DDD3 /* CDDataStack in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +83,7 @@
 				9259850A2B94D1280063DDD3 /* CDDataStackDemoTests */,
 				925985142B94D1280063DDD3 /* CDDataStackDemoUITests */,
 				925984F72B94D1260063DDD3 /* Products */,
+				9259852C2B94D8CF0063DDD3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -134,6 +135,13 @@
 			path = CDDataStackDemoUITests;
 			sourceTree = "<group>";
 		};
+		9259852C2B94D8CF0063DDD3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -151,7 +159,7 @@
 			);
 			name = CDDataStackDemo;
 			packageProductDependencies = (
-				925985252B94D1810063DDD3 /* CDDataStack */,
+				9259852E2B94D90C0063DDD3 /* CDDataStack */,
 			);
 			productName = CDDataStackDemo;
 			productReference = 925984F62B94D1260063DDD3 /* CDDataStackDemo.app */;
@@ -226,7 +234,7 @@
 			);
 			mainGroup = 925984ED2B94D1250063DDD3;
 			packageReferences = (
-				925985242B94D1810063DDD3 /* XCLocalSwiftPackageReference ".." */,
+				9259852D2B94D90C0063DDD3 /* XCLocalSwiftPackageReference ".." */,
 			);
 			productRefGroup = 925984F72B94D1260063DDD3 /* Products */;
 			projectDirPath = "";
@@ -631,14 +639,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		925985242B94D1810063DDD3 /* XCLocalSwiftPackageReference ".." */ = {
+		9259852D2B94D90C0063DDD3 /* XCLocalSwiftPackageReference ".." */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ..;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		925985252B94D1810063DDD3 /* CDDataStack */ = {
+		9259852E2B94D90C0063DDD3 /* CDDataStack */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CDDataStack;
 		};
