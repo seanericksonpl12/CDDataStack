@@ -122,4 +122,5 @@ Supported `@AutoSave` Types:
 ## Metadata
 
 Author - Sean Erickson
+
 seanericksonpl12@gmail.com
