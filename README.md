@@ -102,6 +102,21 @@ Using multiple instances of the same `CDAutoModel` is supported, but it's not re
 
 ### Supported Types
 
+CDDataStack implements the `NSObject` method of `setValue()` to save and set values for tagged models, meaning all types must be Obj-C representable.
+
+To save data however, Core Data Entities only allow a certain amount of primitive types to be saved.  You can create nested objects inside `NestedModel`, but at the very bottom of this nested tree the objects must be one of the ones mentioned below.
+
+More types to be supported in the future - there are plenty of other Obj-C representable objects, I just need to add a mapping by hand to their Core Data representable type.
+
+Supported `@AutoSave` Types:
+    * `Int`
+    * `Float`
+    * `Bool`
+    * `String`
+    * `Double`
+    * `Date`
+    * `Data`
+    * `Array` (With elements of one of the above types)
 
 
 ## Metadata
