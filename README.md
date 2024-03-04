@@ -109,15 +109,16 @@ To save data however, Core Data Entities only allow a certain amount of primitiv
 More types to be supported in the future - there are plenty of other Obj-C representable objects, I just need to add a mapping by hand to their Core Data representable type.
 
 Supported `@AutoSave` Types:
-    * `Int`
-    * `Float`
-    * `Bool`
-    * `String`
-    * `Double`
-    * `Date`
-    * `Data`
-    * `Array` (With elements of one of the above types)
-
+```swift
+    * Int
+    * Float
+    * Bool
+    * String
+    * Double
+    * Date
+    * Data
+    * Array // With elements of one of the above types
+```
 
 ## Metadata
 
