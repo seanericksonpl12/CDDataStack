@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var viewModel: ViewModel = ViewModel(position: nil)
+    @State var viewModel: ViewModel = ViewModel()
     var body: some View {
         VStack {
             Text("User Position: \(viewModel.position.x), \(viewModel.position.y)")
